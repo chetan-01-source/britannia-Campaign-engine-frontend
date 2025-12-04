@@ -65,7 +65,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onGetStarted }) => {
           {/* Title Section */}
           <div className="max-w-4xl mx-auto">
             <h1 className="text-6xl md:text-7xl lg:text-8xl font-bold mb-6 text-transparent bg-clip-text bg-gradient-to-r from-white via-yellow-300 to-red-800 drop-shadow-2xl">
-              Brittania
+              Britannia
             </h1>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold mb-8 text-white drop-shadow-lg">
               Croissant Intelligence Engine
