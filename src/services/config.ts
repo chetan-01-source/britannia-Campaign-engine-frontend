@@ -8,3 +8,4 @@ export const API_CONFIG = {
     INITIAL_PAGE: 1
   }
 } as const;
+

@@ -181,11 +181,11 @@ const LinkedInHistoryPost: React.FC<{ campaign: CampaignHistoryItem }> = ({ camp
         </div>
 
         {/* Image */}
-        <div className="rounded-lg overflow-hidden mb-4">
+        <div className="aspect-video rounded-lg overflow-hidden mb-4">
           <LazyImageHistory 
             src={campaign.imageUrl} 
             alt={campaign.productName}
-            className="w-full h-64 object-cover"
+            className="w-full h-full object-cover"
           />
         </div>
       </div>
@@ -236,11 +236,11 @@ const EmailHistoryTemplate: React.FC<{ campaign: CampaignHistoryItem }> = ({ cam
       {/* Email Content */}
       <div className="p-6">
         {/* Header Image */}
-        <div className="rounded-lg overflow-hidden mb-6">
+        <div className="aspect-video rounded-lg overflow-hidden mb-6">
           <LazyImageHistory 
             src={campaign.imageUrl} 
             alt={campaign.productName}
-            className="w-full h-48 object-cover"
+            className="w-full h-full object-cover"
           />
         </div>
 
