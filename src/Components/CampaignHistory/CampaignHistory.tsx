@@ -123,23 +123,24 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
         <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-16 lg:h-18">
-              <div className="flex items-center space-x-4">
+              <div className="flex items-center">
                 <button
                   onClick={onBack}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 flex items-center space-x-2"
+                  className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 flex items-center space-x-1 sm:space-x-2"
                 >
-                  <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>
-                  <span className="text-gray-600 font-medium">Back to Products</span>
+                  <span className="hidden sm:inline text-gray-600 font-medium">Back to Products</span>
+                  <span className="sm:hidden text-gray-600 font-medium text-sm">Back</span>
                 </button>
               </div>
-              <div className="text-center">
-                <h1 className="text-2xl lg:text-3xl font-bold bg-linear-to-r from-red-700 to-red-900 bg-clip-text text-transparent">
+              <div className="text-center flex-1 mx-2">
+                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-linear-to-r from-red-700 to-red-900 bg-clip-text text-transparent">
                   Campaign History
                 </h1>
               </div>
-              <div className="w-32"></div>
+              <div className="w-8 sm:w-16 lg:w-32"></div>
             </div>
           </div>
         </header>
@@ -162,28 +163,29 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
       <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16 lg:h-18">
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center">
               <button
                 onClick={onBack}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 flex items-center space-x-2"
+                className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 flex items-center space-x-1 sm:space-x-2"
               >
-                <svg className="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                <span className="text-gray-600 font-medium">Back to Products</span>
+                <span className="hidden sm:inline text-gray-600 font-medium">Back to Products</span>
+                <span className="sm:hidden text-gray-600 font-medium text-sm">Back</span>
               </button>
             </div>
-            <div className="text-center">
-              <h1 className="text-2xl lg:text-3xl font-bold bg-linear-to-r from-red-700 to-red-900 bg-clip-text text-transparent">
+            <div className="text-center flex-1 mx-2">
+              <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-linear-to-r from-red-700 to-red-900 bg-clip-text text-transparent">
                 Campaign History
               </h1>
               {totalCount > 0 && (
-                <p className="text-sm text-gray-600">
+                <p className="text-xs sm:text-sm text-gray-600">
                   {totalCount} campaign{totalCount !== 1 ? 's' : ''} generated
                 </p>
               )}
             </div>
-            <div className="w-32"></div>
+            <div className="w-8 sm:w-16 lg:w-32"></div>
           </div>
         </div>
       </header>
