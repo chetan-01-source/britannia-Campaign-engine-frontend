@@ -44,6 +44,13 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
 
     try {
       const response = await getCampaignHistory(page, LIMIT);
+      console.log('Campaign history response:', { 
+        page, 
+        success: response.success, 
+        dataLength: response.data.length, 
+        totalCount: response.totalCount,
+        pagination: response.pagination 
+      });
       
       if (response.success) {
         if (isAppending) {
@@ -74,6 +81,7 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
 
   const loadMoreCampaigns = useCallback(() => {
     if (!loading && hasMore) {
+      console.log('Loading more campaigns:', { currentPage: currentPage + 1, loading, hasMore });
       loadCampaigns(currentPage + 1, true);
     }
   }, [loading, hasMore, currentPage, loadCampaigns]);
@@ -83,6 +91,13 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0];
+        console.log('Intersection observer triggered:', { 
+          isIntersecting: target.isIntersecting, 
+          hasMore, 
+          loading,
+          currentPage,
+          totalCampaigns: campaigns.length 
+        });
         if (target.isIntersecting && hasMore && !loading) {
           loadMoreCampaigns();
         }
@@ -93,16 +108,21 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
       }
     );
 
-    if (observerTarget.current) {
-      observer.observe(observerTarget.current);
+    const currentTarget = observerTarget.current;
+    if (currentTarget) {
+      observer.observe(currentTarget);
+      console.log('Observer attached to target');
+    } else {
+      console.log('No target found for observer');
     }
 
     return () => {
-      if (observerTarget.current) {
-        observer.unobserve(observerTarget.current);
+      if (currentTarget) {
+        observer.unobserve(currentTarget);
+        console.log('Observer detached from target');
       }
     };
-  }, [hasMore, loading, loadMoreCampaigns]);
+  }, [hasMore, loading, loadMoreCampaigns, campaigns.length, currentPage]);
 
   // Initial load
   useEffect(() => {
@@ -241,22 +261,20 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
                   <div className="text-sm text-gray-600">Total Campaigns</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">
-                    {campaigns.filter(c => c.platform === 'instagram').length}
-                  </div>
-                  <div className="text-sm text-gray-600">Instagram Posts</div>
+                  <div className="text-3xl font-bold text-blue-600">{campaigns.length}</div>
+                  <div className="text-sm text-gray-600">Loaded Campaigns</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-green-600">
-                    {campaigns.filter(c => c.platform === 'linkedin').length}
+                    {campaigns.filter(c => c.isActive).length}
                   </div>
-                  <div className="text-sm text-gray-600">LinkedIn Posts</div>
+                  <div className="text-sm text-gray-600">Active Campaigns</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-purple-600">
-                    {campaigns.filter(c => c.platform === 'email').length}
+                    {new Set(campaigns.map(c => c.productName)).size}
                   </div>
-                  <div className="text-sm text-gray-600">Email Campaigns</div>
+                  <div className="text-sm text-gray-600">Unique Products</div>
                 </div>
               </div>
             </div>
@@ -291,7 +309,9 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
             )}
 
             {/* Infinite Scroll Target */}
-            <div ref={observerTarget} className="h-4" />
+            {hasMore && (
+              <div ref={observerTarget} className="h-4 w-full" />
+            )}
           </div>
         )}
       </main>
