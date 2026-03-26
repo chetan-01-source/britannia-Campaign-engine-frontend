@@ -149,13 +149,13 @@ const Home: React.FC<HomeProps> = () => {
         </div>
 
         {/* Products Section */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-12">
           {/* Section Header */}
-          <div className="text-center mb-10">
-            <h2 className="text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-6 sm:mb-10">
+            <h2 className="text-2xl sm:text-4xl font-bold text-gray-900 mb-2 sm:mb-4">
               Discover Our Products
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
+            <p className="text-sm sm:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
               Search and generate campaigns for Britannia products with our intelligent engine
             </p>
             {products.length > 0 && (

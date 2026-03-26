@@ -55,16 +55,16 @@ const Carousel: React.FC<CarouselProps> = ({
 
   if (!items || items.length === 0) {
     return (
-      <div className="relative w-full h-96 bg-linear-to-r from-gray-100 to-gray-200 rounded-2xl flex items-center justify-center">
-        <div className="text-gray-400 text-xl">No carousel items available</div>
+      <div className="relative w-full h-48 sm:h-72 md:h-96 bg-linear-to-r from-gray-100 to-gray-200 rounded-xl sm:rounded-2xl flex items-center justify-center">
+        <div className="text-gray-400 text-base sm:text-xl">No carousel items available</div>
       </div>
     );
   }
 
   return (
-    <div className="relative w-full h-96 overflow-hidden rounded-2xl shadow-xl bg-white group">
+    <div className="relative w-full h-48 sm:h-72 md:h-96 overflow-hidden rounded-xl sm:rounded-2xl shadow-xl bg-white group">
       {/* Carousel Items */}
-      <div 
+      <div
         className="flex transition-transform duration-500 ease-in-out h-full"
         style={{ transform: `translateX(-${currentIndex * 100}%)` }}
       >
@@ -84,19 +84,19 @@ const Carousel: React.FC<CarouselProps> = ({
                 <div className="absolute inset-0 bg-black/40"></div>
               </div>
             )}
-            
+
             {/* Content Overlay */}
-            <div className="relative z-10 text-center text-white px-8 max-w-4xl">
-              <div className="inline-flex items-center px-4 py-2 rounded-full bg-yellow-500/20 text-yellow-200 text-sm font-medium mb-4 backdrop-blur-sm">
+            <div className="relative z-10 text-center text-white px-4 sm:px-8 max-w-4xl">
+              <div className="inline-flex items-center px-3 sm:px-4 py-1 sm:py-2 rounded-full bg-yellow-500/20 text-yellow-200 text-xs sm:text-sm font-medium mb-2 sm:mb-4 backdrop-blur-sm">
                 {item.category}
               </div>
-              <h2 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+              <h2 className="text-xl sm:text-4xl md:text-6xl font-bold mb-2 sm:mb-4 drop-shadow-lg">
                 {item.title}
               </h2>
-              <p className="text-lg md:text-xl mb-6 drop-shadow-md max-w-2xl mx-auto">
+              <p className="text-xs sm:text-lg md:text-xl mb-3 sm:mb-6 drop-shadow-md max-w-2xl mx-auto hidden sm:block">
                 {item.description}
               </p>
-              <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg">
+              <button className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 sm:py-3 px-5 sm:px-8 rounded-full transition-all duration-300 transform hover:scale-105 shadow-lg text-xs sm:text-base">
                 Explore Products
               </button>
             </div>
@@ -109,17 +109,17 @@ const Carousel: React.FC<CarouselProps> = ({
         <>
           <button
             onClick={goToPrevious}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+            className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-1.5 sm:p-3 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100 backdrop-blur-sm"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
           </button>
           <button
             onClick={goToNext}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-3 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100 backdrop-blur-sm"
+            className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 bg-white/20 hover:bg-white/30 text-white p-1.5 sm:p-3 rounded-full transition-all duration-300 opacity-0 group-hover:opacity-100 backdrop-blur-sm"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-4 h-4 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
           </button>
@@ -128,14 +128,14 @@ const Carousel: React.FC<CarouselProps> = ({
 
       {/* Dots Indicator */}
       {items.length > 1 && (
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        <div className="absolute bottom-3 sm:bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-1.5 sm:space-x-2">
           {items.map((_, index) => (
             <button
               key={index}
               onClick={() => goToSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentIndex 
-                  ? 'bg-white scale-125' 
+              className={`w-2 h-2 sm:w-3 sm:h-3 rounded-full transition-all duration-300 ${
+                index === currentIndex
+                  ? 'bg-white scale-125'
                   : 'bg-white/50 hover:bg-white/75'
               }`}
             />

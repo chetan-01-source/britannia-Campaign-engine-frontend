@@ -21,7 +21,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   });
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
         {[...Array(8)].map((_, index) => (
           <ProductCardSkeleton key={index} />
         ))}
@@ -44,7 +44,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
   return (
     <div className="space-y-8">
       {products && products.length > 0 && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
           {products
             .filter(product => product && product.id) // Filter out invalid products
             .map((product) => (
@@ -62,7 +62,7 @@ const ProductGrid: React.FC<ProductGridProps> = ({
         <div className="space-y-8">
           {/* Loading skeletons during infinite scroll */}
           {isLoading && (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
               {[...Array(4)].map((_, index) => (
                 <ProductCardSkeleton key={`skeleton-${index}`} />
               ))}

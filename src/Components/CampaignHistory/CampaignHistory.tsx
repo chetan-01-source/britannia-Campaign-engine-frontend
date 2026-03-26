@@ -16,10 +16,10 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
   const [error, setError] = useState<string | null>(null);
-  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'warning'; isVisible: boolean }>({ 
-    message: '', 
-    type: 'success', 
-    isVisible: false 
+  const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' | 'warning'; isVisible: boolean }>({
+    message: '',
+    type: 'success',
+    isVisible: false
   });
 
   const observerTarget = useRef<HTMLDivElement>(null);
@@ -39,26 +39,19 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
     } else {
       setLoading(true);
     }
-    
+
     setError(null);
 
     try {
       const response = await getCampaignHistory(page, LIMIT);
-      console.log('Campaign history response:', { 
-        page, 
-        success: response.success, 
-        dataLength: response.data.length, 
-        totalCount: response.totalCount,
-        pagination: response.pagination 
-      });
-      
+
       if (response.success) {
         if (isAppending) {
           setCampaigns(prev => [...prev, ...response.data]);
         } else {
           setCampaigns(response.data);
         }
-        
+
         setTotalCount(response.totalCount);
         setHasMore(response.pagination.hasNext);
         setCurrentPage(page);
@@ -69,7 +62,7 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
       const errorMessage = err instanceof Error ? err.message : 'Failed to load campaign history';
       setError(errorMessage);
       showToast(errorMessage, 'error');
-      
+
       if (!isAppending) {
         setCampaigns([]);
       }
@@ -81,7 +74,6 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
 
   const loadMoreCampaigns = useCallback(() => {
     if (!loading && hasMore) {
-      console.log('Loading more campaigns:', { currentPage: currentPage + 1, loading, hasMore });
       loadCampaigns(currentPage + 1, true);
     }
   }, [loading, hasMore, currentPage, loadCampaigns]);
@@ -91,13 +83,6 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
     const observer = new IntersectionObserver(
       (entries) => {
         const target = entries[0];
-        console.log('Intersection observer triggered:', { 
-          isIntersecting: target.isIntersecting, 
-          hasMore, 
-          loading,
-          currentPage,
-          totalCampaigns: campaigns.length 
-        });
         if (target.isIntersecting && hasMore && !loading) {
           loadMoreCampaigns();
         }
@@ -111,15 +96,11 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
     const currentTarget = observerTarget.current;
     if (currentTarget) {
       observer.observe(currentTarget);
-      console.log('Observer attached to target');
-    } else {
-      console.log('No target found for observer');
     }
 
     return () => {
       if (currentTarget) {
         observer.unobserve(currentTarget);
-        console.log('Observer detached from target');
       }
     };
   }, [hasMore, loading, loadMoreCampaigns, campaigns.length, currentPage]);
@@ -136,41 +117,47 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
     loadCampaigns(1);
   };
 
+  const headerContent = (
+    <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm sticky top-0 z-40">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-16 lg:h-18">
+          <div className="flex items-center">
+            <button
+              onClick={onBack}
+              className="p-1.5 sm:p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 flex items-center space-x-1 sm:space-x-2"
+            >
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              <span className="hidden sm:inline text-gray-600 font-medium text-sm">Back to Products</span>
+              <span className="sm:hidden text-gray-600 font-medium text-xs">Back</span>
+            </button>
+          </div>
+          <div className="text-center flex-1 mx-2">
+            <h1 className="text-base sm:text-xl md:text-2xl lg:text-3xl font-bold bg-linear-to-r from-red-700 to-red-900 bg-clip-text text-transparent">
+              Campaign History
+            </h1>
+            {totalCount > 0 && (
+              <p className="text-[10px] sm:text-sm text-gray-600">
+                {totalCount} campaign{totalCount !== 1 ? 's' : ''} generated
+              </p>
+            )}
+          </div>
+          <div className="w-8 sm:w-16 lg:w-32"></div>
+        </div>
+      </div>
+    </header>
+  );
+
   if (initialLoading) {
     return (
       <div className="min-h-screen bg-linear-to-br from-red-50 via-yellow-50 to-orange-50">
-        {/* Header */}
-        <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex items-center justify-between h-16 lg:h-18">
-              <div className="flex items-center">
-                <button
-                  onClick={onBack}
-                  className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 flex items-center space-x-1 sm:space-x-2"
-                >
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </svg>
-                  <span className="hidden sm:inline text-gray-600 font-medium">Back to Products</span>
-                  <span className="sm:hidden text-gray-600 font-medium text-sm">Back</span>
-                </button>
-              </div>
-              <div className="text-center flex-1 mx-2">
-                <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-linear-to-r from-red-700 to-red-900 bg-clip-text text-transparent">
-                  Campaign History
-                </h1>
-              </div>
-              <div className="w-8 sm:w-16 lg:w-32"></div>
-            </div>
-          </div>
-        </header>
-
-        {/* Loading State */}
-        <div className="flex justify-center items-center py-32">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-red-600 mx-auto mb-4"></div>
-            <h3 className="text-xl font-semibold text-gray-600 mb-2">Loading Campaign History...</h3>
-            <p className="text-gray-500">Please wait while we fetch your campaigns</p>
+        {headerContent}
+        <div className="flex justify-center items-center py-24 sm:py-32">
+          <div className="text-center px-4">
+            <div className="animate-spin rounded-full h-12 w-12 sm:h-16 sm:w-16 border-b-2 border-red-600 mx-auto mb-4"></div>
+            <h3 className="text-lg sm:text-xl font-semibold text-gray-600 mb-2">Loading Campaign History...</h3>
+            <p className="text-sm sm:text-base text-gray-500">Please wait while we fetch your campaigns</p>
           </div>
         </div>
       </div>
@@ -179,52 +166,23 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
 
   return (
     <div className="min-h-screen bg-linear-to-br from-red-50 via-yellow-50 to-orange-50">
-      {/* Header */}
-      <header className="bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16 lg:h-18">
-            <div className="flex items-center">
-              <button
-                onClick={onBack}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors duration-200 flex items-center space-x-1 sm:space-x-2"
-              >
-                <svg className="w-4 h-4 sm:w-5 sm:h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                <span className="hidden sm:inline text-gray-600 font-medium">Back to Products</span>
-                <span className="sm:hidden text-gray-600 font-medium text-sm">Back</span>
-              </button>
-            </div>
-            <div className="text-center flex-1 mx-2">
-              <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold bg-linear-to-r from-red-700 to-red-900 bg-clip-text text-transparent">
-                Campaign History
-              </h1>
-              {totalCount > 0 && (
-                <p className="text-xs sm:text-sm text-gray-600">
-                  {totalCount} campaign{totalCount !== 1 ? 's' : ''} generated
-                </p>
-              )}
-            </div>
-            <div className="w-8 sm:w-16 lg:w-32"></div>
-          </div>
-        </div>
-      </header>
+      {headerContent}
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-4 sm:py-8">
         {/* Error State */}
         {error && campaigns.length === 0 && (
-          <div className="text-center py-24">
-            <div className="w-32 h-32 bg-linear-to-br from-red-100 to-red-200 rounded-3xl flex items-center justify-center mb-8 mx-auto shadow-lg">
-              <div className="text-8xl">⚠️</div>
+          <div className="text-center py-16 sm:py-24 px-4">
+            <div className="w-20 h-20 sm:w-32 sm:h-32 bg-linear-to-br from-red-100 to-red-200 rounded-2xl sm:rounded-3xl flex items-center justify-center mb-6 sm:mb-8 mx-auto shadow-lg">
+              <div className="text-5xl sm:text-8xl">⚠️</div>
             </div>
-            <h3 className="text-2xl font-bold text-red-600 mb-4">Failed to Load Campaigns</h3>
-            <p className="text-gray-500 mb-8 text-lg max-w-md mx-auto leading-relaxed">
+            <h3 className="text-xl sm:text-2xl font-bold text-red-600 mb-3 sm:mb-4">Failed to Load Campaigns</h3>
+            <p className="text-gray-500 mb-6 sm:mb-8 text-sm sm:text-lg max-w-md mx-auto leading-relaxed">
               {error}
             </p>
             <button
               onClick={handleRetry}
-              className="bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+              className="bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 text-sm sm:text-base"
             >
               Try Again
             </button>
@@ -233,17 +191,17 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
 
         {/* Empty State */}
         {!error && campaigns.length === 0 && !initialLoading && (
-          <div className="text-center py-24">
-            <div className="w-32 h-32 bg-linear-to-br from-gray-100 to-gray-200 rounded-3xl flex items-center justify-center mb-8 mx-auto shadow-lg">
-              <div className="text-8xl">📊</div>
+          <div className="text-center py-16 sm:py-24 px-4">
+            <div className="w-20 h-20 sm:w-32 sm:h-32 bg-linear-to-br from-gray-100 to-gray-200 rounded-2xl sm:rounded-3xl flex items-center justify-center mb-6 sm:mb-8 mx-auto shadow-lg">
+              <div className="text-5xl sm:text-8xl">📊</div>
             </div>
-            <h3 className="text-2xl font-bold text-gray-600 mb-4">No Campaigns Yet</h3>
-            <p className="text-gray-500 mb-8 text-lg max-w-md mx-auto leading-relaxed">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-600 mb-3 sm:mb-4">No Campaigns Yet</h3>
+            <p className="text-gray-500 mb-6 sm:mb-8 text-sm sm:text-lg max-w-md mx-auto leading-relaxed">
               You haven't generated any campaigns yet. Start creating some amazing content!
             </p>
             <button
               onClick={onBack}
-              className="bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-4 px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95"
+              className="bg-linear-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white font-bold py-3 sm:py-4 px-6 sm:px-8 rounded-full transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105 active:scale-95 text-sm sm:text-base"
             >
               Create Your First Campaign
             </button>
@@ -252,58 +210,59 @@ const CampaignHistory: React.FC<CampaignHistoryProps> = ({ onBack }) => {
 
         {/* Campaigns Grid */}
         {campaigns.length > 0 && (
-          <div className="space-y-8">
+          <div className="space-y-4 sm:space-y-8">
             {/* Stats Bar */}
-            <div className="bg-white rounded-2xl shadow-lg p-6 border border-gray-200">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-red-600">{totalCount}</div>
-                  <div className="text-sm text-gray-600">Total Campaigns</div>
+            <div className="bg-white rounded-xl sm:rounded-2xl shadow-lg p-3 sm:p-6 border border-gray-200">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-6">
+                <div className="text-center p-2 sm:p-0">
+                  <div className="text-xl sm:text-3xl font-bold text-red-600">{totalCount}</div>
+                  <div className="text-[10px] sm:text-sm text-gray-600">Total Campaigns</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-blue-600">{campaigns.length}</div>
-                  <div className="text-sm text-gray-600">Loaded Campaigns</div>
+                <div className="text-center p-2 sm:p-0">
+                  <div className="text-xl sm:text-3xl font-bold text-blue-600">{campaigns.length}</div>
+                  <div className="text-[10px] sm:text-sm text-gray-600">Loaded</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-green-600">
+                <div className="text-center p-2 sm:p-0">
+                  <div className="text-xl sm:text-3xl font-bold text-green-600">
                     {campaigns.filter(c => c.isActive).length}
                   </div>
-                  <div className="text-sm text-gray-600">Active Campaigns</div>
+                  <div className="text-[10px] sm:text-sm text-gray-600">Active</div>
                 </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-purple-600">
+                <div className="text-center p-2 sm:p-0">
+                  <div className="text-xl sm:text-3xl font-bold text-purple-600">
                     {new Set(campaigns.map(c => c.productName)).size}
                   </div>
-                  <div className="text-sm text-gray-600">Unique Products</div>
+                  <div className="text-[10px] sm:text-sm text-gray-600">Unique Products</div>
                 </div>
               </div>
             </div>
 
             {/* Campaigns List */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 lg:gap-8">
               {campaigns.map((campaign) => (
-                <CampaignPost 
-                  key={campaign._id} 
-                  campaign={campaign} 
+                <CampaignPost
+                  key={campaign._id}
+                  campaign={campaign}
+                  onToast={showToast}
                 />
               ))}
             </div>
 
             {/* Loading More Indicator */}
             {loading && (
-              <div className="flex justify-center py-8">
+              <div className="flex justify-center py-6 sm:py-8">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600 mx-auto mb-2"></div>
-                  <p className="text-gray-600 text-sm">Loading more campaigns...</p>
+                  <div className="animate-spin rounded-full h-6 w-6 sm:h-8 sm:w-8 border-b-2 border-red-600 mx-auto mb-2"></div>
+                  <p className="text-gray-600 text-xs sm:text-sm">Loading more campaigns...</p>
                 </div>
               </div>
             )}
 
             {/* End of Results */}
             {!hasMore && campaigns.length > 0 && (
-              <div className="text-center py-8">
-                <div className="bg-linear-to-r from-gray-100 to-gray-200 rounded-full px-6 py-3 shadow-sm inline-block">
-                  <span className="text-gray-600 font-medium">🎉 You've seen all campaigns!</span>
+              <div className="text-center py-6 sm:py-8">
+                <div className="bg-linear-to-r from-gray-100 to-gray-200 rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-sm inline-block">
+                  <span className="text-gray-600 font-medium text-xs sm:text-base">You've seen all campaigns!</span>
                 </div>
               </div>
             )}

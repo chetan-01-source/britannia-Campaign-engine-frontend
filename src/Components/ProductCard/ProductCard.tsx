@@ -16,7 +16,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onGenerateCampaign }
   return (
     <div className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden border border-gray-100 hover:border-yellow-300/50 transform hover:-translate-y-2 hover:scale-[1.02] flex flex-col">
       {/* Product Image */}
-      <div className="relative w-full h-56 bg-linear-to-br from-gray-50 via-yellow-50/30 to-gray-100 flex items-center justify-center overflow-hidden shrink-0">
+      <div className="relative w-full h-32 sm:h-56 bg-linear-to-br from-gray-50 via-yellow-50/30 to-gray-100 flex items-center justify-center overflow-hidden shrink-0">
         {product.image ? (
           <LazyImage
             src={product.image}
@@ -33,22 +33,22 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onGenerateCampaign }
       </div>
       
       {/* Product Info */}
-      <div className="p-6 flex flex-col flex-1">
+      <div className="p-3 sm:p-6 flex flex-col flex-1">
         {/* Title and Category */}
-        <div className="mb-4">
-          <h3 className="text-xl font-bold text-gray-800 line-clamp-2 group-hover:text-red-700 transition-colors duration-300 mb-3">
+        <div className="mb-2 sm:mb-4">
+          <h3 className="text-sm sm:text-xl font-bold text-gray-800 line-clamp-2 group-hover:text-red-700 transition-colors duration-300 mb-1.5 sm:mb-3">
             {product.name || 'Unnamed Product'}
           </h3>
           <div className="flex items-center space-x-2">
-            <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-100 text-yellow-800 border border-yellow-200">
+            <span className="inline-flex items-center px-2 sm:px-3 py-0.5 sm:py-1 rounded-full text-[10px] sm:text-xs font-semibold bg-yellow-100 text-yellow-800 border border-yellow-200">
               {product.category || 'Uncategorized'}
             </span>
           </div>
         </div>
         
         {/* Description with Read More */}
-        <div className={`mb-6 transition-all duration-300 ${isExpanded ? 'grow' : ''}`}>
-          <p className="text-sm text-gray-600 leading-relaxed">
+        <div className={`mb-3 sm:mb-6 transition-all duration-300 ${isExpanded ? 'grow' : ''}`}>
+          <p className="text-xs sm:text-sm text-gray-600 leading-relaxed hidden sm:block">
             {displayDescription}
           </p>
           {needsExpansion && (
@@ -76,13 +76,13 @@ const ProductCard: React.FC<ProductCardProps> = ({ product, onGenerateCampaign }
         <div className="mt-auto">
           <button
             onClick={() => onGenerateCampaign(product.id)}
-            className="w-full bg-linear-to-r from-red-600 via-red-700 to-red-800 hover:from-red-700 hover:via-red-800 hover:to-red-900 text-white font-bold py-4 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group-hover:shadow-red-500/25 active:scale-95"
+            className="w-full bg-linear-to-r from-red-600 via-red-700 to-red-800 hover:from-red-700 hover:via-red-800 hover:to-red-900 text-white font-bold py-2.5 sm:py-4 px-4 sm:px-6 rounded-lg sm:rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl group-hover:shadow-red-500/25 active:scale-95"
           >
-            <span className="flex items-center justify-center space-x-2">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <span className="flex items-center justify-center space-x-1 sm:space-x-2">
+              <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
               </svg>
-              <span>Generate Campaign</span>
+              <span className="text-xs sm:text-base">Generate Campaign</span>
             </span>
           </button>
         </div>

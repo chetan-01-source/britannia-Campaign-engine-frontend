@@ -1,3 +1,5 @@
+import { API_CONFIG } from './config';
+
 export interface BrandingResponse {
   success: boolean;
   message: string;
@@ -38,7 +40,7 @@ export const generateBranding = async (data: {
   style: string;
   flavor: string;
 }): Promise<BrandingResponse> => {
-  const response = await fetch('https://homeless-chelsae-personal-01-a2adb1b6.koyeb.app/api/branding/generate', {
+  const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.BRANDING_GENERATE}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
