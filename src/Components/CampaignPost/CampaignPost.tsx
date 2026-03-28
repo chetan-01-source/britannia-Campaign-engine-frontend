@@ -73,12 +73,13 @@ const FLAVOR_MAX_LENGTH = 60;
 
 const FlavorText: React.FC<{ flavor: string }> = ({ flavor }) => {
   const [isFlavorExpanded, setIsFlavorExpanded] = useState(false);
+
+  if (!flavor) return null;
+
   const shouldTruncate = flavor.length > FLAVOR_MAX_LENGTH;
   const displayFlavor = shouldTruncate && !isFlavorExpanded
     ? flavor.slice(0, FLAVOR_MAX_LENGTH) + '...'
     : flavor;
-
-  if (!flavor) return null;
 
   return (
     <div className="mt-2 bg-amber-50 border border-amber-100 rounded-lg p-2 sm:p-2.5">
